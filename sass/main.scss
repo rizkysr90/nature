@@ -16,67 +16,25 @@ $color-grey: #777;
 body {
     font-family: "Lato",sans-serif;
     font-weight: 400;
-    /* font-size: 16px; */
     line-height: 1.7;
     color: $color-grey;
     padding: 3rem;
 }
-
-/* HEADER */
-.header {
-    height: 95vh;
-    background-image: linear-gradient(
-        to right bottom,
-        rgba($color-primary-lighten, 0.801), 
-        rgba($color-primary-darken, 0.801)),
-        url(../img/mountain.jpg);
-    background-size: cover;
-    background-position: right ;
-    clip-path: polygon(0 0,100% 0,100% 75vh,0 100%);
-    position: relative;
-}
-
-/* Logo Header */
-.header__logo-box {
+@mixin positionAbsolute($top-offset,$left-offset) {
     position: absolute;
-    top: 4rem;
-    left: 4rem;
+    top: $top-offset;
+    left: $left-offset;
 }
-.header__logo {
-    height: 3.5rem;
+@mixin headingStyle($block-type,$sizeInRem,$styleweight,$spacingInRem) {
+        display: $block-type;
+        font-size: $sizeInRem;
+        font-weight: $styleweight;
+        letter-spacing: $spacingInRem;
 }
-
-/* Heading Primary */
-.header__text-box {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    text-align: center;
+@mixin buttonColor($background-col, $text-col) {
+    background-color: $background-col;
+    color: $text-col;
 }
-.heading-primary {
-    color: #fff;
-    text-transform: uppercase;
-    text-align: center;
-    backface-visibility: hidden;
-    margin-bottom: 4rem;
-   
-}
-.heading-primary--main {
-    display: inline-block;
-    font-size: 6rem;
-    font-weight: 400;
-    letter-spacing: 3rem;
-    animation: moveToRight 1s ease-out;
-}
-.heading-primary--sub {
-    display: inline-block;
-    font-size: 2rem;
-    font-weight: 700;
-    letter-spacing: 1.5rem;
-    animation: moveToLeft 1s ease-out;
-}
-
 /* Keyframe Rules */
 @keyframes moveToRight {
     0% {
@@ -119,36 +77,81 @@ body {
         transform: translateY(0);
     }
 }
-/* Button Header */
-.btn:link,
-.btn:visited {
-    display: inline-block;
-    padding: 1.5rem 4rem;
-    text-decoration: none;
-    border-radius: 10rem;
-    text-transform: uppercase;
-    transition: all .2s;
+/* HEADER */
+.header {
+    height: 95vh;
+    background-image: linear-gradient(
+        to right bottom,
+        rgba($color-primary-lighten, 0.801), 
+        rgba($color-primary-darken, 0.801)),
+        url(../img/mountain.jpg);
+    background-size: cover;
+    background-position: right ;
+    clip-path: polygon(0 0,100% 0,100% 75vh,0 100%);
     position: relative;
-    font-size: 1.6rem;
-   
+    text-align: center;
+
+    .header__logo-box {
+        @include positionAbsolute(4rem, 4rem);
+        .header__logo {
+            height: 3.5rem;
+        }
+    }
+
+    .header__text-box {
+        @include positionAbsolute(40%, 50%);
+        transform: translate(-50%,-50%);
+        // text-align: center;
+        .heading-primary {
+            color: #fff;
+            text-transform: uppercase;
+            backface-visibility: hidden;
+            margin-bottom: 4rem;
+
+            .heading-primary--main {
+                @include headingStyle(inline-block ,6rem ,400 ,3rem);
+                animation: moveToRight 1s ease-out;
+            }
+
+            .heading-primary--sub {
+                @include headingStyle(inline-block ,2rem ,700 ,1.5rem);
+                animation: moveToLeft 1s ease-out;
+            }
+           
+        }
+    }
+
 }
 
+/* Button Header */
+.btn {
+    &:link,&:visited {
+        display: inline-block;
+        padding: 1.5rem 4rem;
+        text-decoration: none;
+        border-radius: 10rem;
+        text-transform: uppercase;
+        transition: all .2s;
+        position: relative;
+        font-size: 1.6rem;
+    }
+    &:hover {
+        transform: translateY(-.3rem);
+        box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+    }
+    &:active {
+        transform: translateY(-.1rem);
+        box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.2);
+    }
+
+}
 
 .btn--white {
-    background-color: white;
-    color: #777;
+    @include buttonColor(white, #777);
 }
 
-.btn:hover {
-    transform: translateY(-.3rem);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-.btn:active {
-    transform: translateY(-.1rem);
-    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, 0.2);
-}
 
-.btn:after {
+.btn::after {
     content: "";
     display: inline-block;
     width: 100%;
@@ -160,7 +163,7 @@ body {
     z-index: -1;
     transition: all .5s ease-out;
 }
-.btn--white:after {
+.btn--white::after {
     background-color: #fff;
 }
 .btn:hover::after{
@@ -168,6 +171,6 @@ body {
     opacity: 0;
 }
 .btn--animated {
-    animation: moveToTop 1s ease-out .75s;
+    animation: moveToTop .5s ease-out .50s;
     animation-fill-mode: backwards;
 }
